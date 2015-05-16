@@ -1,0 +1,3 @@
+[submodule "ATF"]
+	path = ATF
+	url = https://github.com/SonyWWS/ATF.git
