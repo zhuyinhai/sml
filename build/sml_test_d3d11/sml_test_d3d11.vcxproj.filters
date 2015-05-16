@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="test_d3d11">
+      <UniqueIdentifier>{afc9ad71-1e90-461a-9b85-01d39863298c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\test_d3d11\main.cpp">
+      <Filter>test_d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test_d3d11\animator.cpp">
+      <Filter>test_d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test_d3d11\trace.cpp">
+      <Filter>test_d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test_d3d11\data.cpp">
+      <Filter>test_d3d11</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\test_d3d11\sml_config.h">
+      <Filter>test_d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\test_d3d11\sprite.h">
+      <Filter>test_d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\test_d3d11\animator.h">
+      <Filter>test_d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\test_d3d11\trace.h">
+      <Filter>test_d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\test_d3d11\array.h">
+      <Filter>test_d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\test_d3d11\data.h">
+      <Filter>test_d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\test_d3d11\plane.h">
+      <Filter>test_d3d11</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

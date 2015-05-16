@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="sml">
+      <UniqueIdentifier>{ea919851-f1e7-4d68-8ec4-e78b353c638c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sml\inl">
+      <UniqueIdentifier>{b85f0785-1bab-4085-b549-68ff98ee83e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sml\utility">
+      <UniqueIdentifier>{be8259c1-90bf-4492-af8d-7aba4caedfec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sml\data">
+      <UniqueIdentifier>{18c20a5d-e435-4fa7-a5f5-ce4bd82e0df6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sml\inl\data">
+      <UniqueIdentifier>{68999c76-1b9c-4b60-a371-1a15d45b16da}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\sml\config.h">
+      <Filter>sml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sml\type.h">
+      <Filter>sml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sml\animator.h">
+      <Filter>sml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sml\composition.h">
+      <Filter>sml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sml\layer.h">
+      <Filter>sml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sml\state.h">
+      <Filter>sml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sml\path.h">
+      <Filter>sml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sml\type_traits.h">
+      <Filter>sml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sml\utility\delimited_path_traits.h">
+      <Filter>sml\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sml\list.h">
+      <Filter>sml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sml\data\accessor.h">
+      <Filter>sml\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sml\data\format.h">
+      <Filter>sml\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sml\data\type.h">
+      <Filter>sml\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sml\data\array.h">
+      <Filter>sml\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sml\data\iterator.h">
+      <Filter>sml\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sml\state_machine.h">
+      <Filter>sml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sml\interpolation.h">
+      <Filter>sml</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\sml\inl\animator.inl">
+      <Filter>sml\inl</Filter>
+    </None>
+    <None Include="..\..\sml\inl\composition.inl">
+      <Filter>sml\inl</Filter>
+    </None>
+    <None Include="..\..\sml\inl\layer.inl">
+      <Filter>sml\inl</Filter>
+    </None>
+    <None Include="..\..\sml\inl\list.inl">
+      <Filter>sml\inl</Filter>
+    </None>
+    <None Include="..\..\sml\inl\state.inl">
+      <Filter>sml\inl</Filter>
+    </None>
+    <None Include="..\..\sml\inl\data\accessor.inl">
+      <Filter>sml\inl\data</Filter>
+    </None>
+    <None Include="..\..\sml\inl\state_machine.inl">
+      <Filter>sml\inl</Filter>
+    </None>
+  </ItemGroup>
+</Project>
