@@ -60,7 +60,8 @@ namespace SmlEditor
                 typeof(AtfScriptVariables),             // exposes common ATF services as script variables
                 typeof(AutomationService),               // provides facilities to run an automated script using the .NET remoting service
 
-                typeof(SmlEditor)
+                typeof(SmlEditor),
+                typeof(TextureListEditor)
                 );
 
             var container = new CompositionContainer(catalog);

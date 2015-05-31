@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xs:schema
+  elementFormDefault="qualified"
+  targetNamespace="Sml"
+  xmlns="Sml"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!--include-->
+  <xs:include schemaLocation="Texture.xsd"/>
+
+  <!--Declare the root element of the document-->
+  <xs:element name="textureSeuence" type="textureSequenceType"/>
+
+</xs:schema>
