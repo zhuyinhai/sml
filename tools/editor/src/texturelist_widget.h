@@ -1,19 +1,21 @@
-#ifndef TEXTURELIST_WIDGET_H
-#define TEXTURELIST_WIDGET_H
+
+#pragma once
 
 #include <QDockWidget>
 namespace Ui {class TextureListWidget;}
+
+class TextureListModel;
 
 class TextureListWidget : public QDockWidget
 {
 	Q_OBJECT
 
 public:
-	TextureListWidget(QWidget *parent = 0);
+	TextureListWidget(QWidget *parent = Q_NULLPTR);
 	~TextureListWidget();
 
 private:
 	Ui::TextureListWidget *ui_;
+	TextureListModel* textureListModel_;
 };
 
-#endif // TEXTURELIST_WIDGET_H
