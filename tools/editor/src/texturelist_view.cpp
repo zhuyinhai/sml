@@ -5,7 +5,7 @@
 #include <QMenu>
 
 #include "texturelist_view.h"
-
+#include "texturelist_model.h"
 
 // -----------------------------------
 //  TextureListView
@@ -14,44 +14,102 @@ TextureListView::TextureListView(QWidget *parent)
 	: QTreeView(parent)
 {
 	setAcceptDrops(true);
+	setDragEnabled(true);
+	setDragDropOverwriteMode(false);
+	setDropIndicatorShown(true);
+	setDragDropMode(QAbstractItemView::InternalMove);
+	setDefaultDropAction(Qt::MoveAction);
 
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
 		this, SLOT(showContextMenu(const QPoint&)));
+
+	setSelectionModel( new QItemSelectionModel(model(), this) );
 }
 
 TextureListView::~TextureListView(void)
 {}
 
-
+#if 0
 void TextureListView::dragEnterEvent(QDragEnterEvent* e)
 {
-	e->accept();
+	e->acceptProposedAction();
 }
+#endif
 
-void TextureListView::dragMoveEvent(QDragMoveEvent * e)
+void TextureListView::dragMoveEvent(QDragMoveEvent* e)
 {
-	e->setDropAction(Qt::LinkAction);
-	e->accept();
+	QModelIndex destIndex = indexAt(e->pos());
+	if(!destIndex.isValid())
+	{
+		QTreeView::dragMoveEvent(e);
+		return;
+	}
+	if(auto mdl = qobject_cast<TextureListModel*>(model()))
+	{
+		const QStandardItem* destItem = mdl->itemFromIndex(destIndex);
+		for(auto index : selectedIndexes())
+		{
+			const QStandardItem* srcItem = mdl->itemFromIndex(index);
+			const QStandardItem* checkItem = destItem;
+			do
+			{
+				if(srcItem == checkItem)
+				{
+					e->ignore();
+					return;
+				}
+			} while(checkItem = checkItem->parent());
+		}
+	}
+	e->acceptProposedAction();
 }
 
-void TextureListView::dropEvent(QDropEvent *)
-{}
+void TextureListView::dropEvent(QDropEvent * e)
+{
+	QModelIndex droppedIndex = indexAt( e->pos() );
+
+	if(!droppedIndex.isValid())
+	{
+		QTreeView::dropEvent(e);
+		return;
+	}
+
+	if(auto mdl = qobject_cast<TextureListModel*>(model()))
+	{
+		for( auto index : selectedIndexes() )
+		{
+			mdl->moveRows( index.parent(), index.row(), 1, droppedIndex, 0 );
+			break;
+		}
+	}
+}
+
 
 void TextureListView::showContextMenu(const QPoint& pos)
 {
 	QMenu menu;
-	QAction* actionItem1 = menu.addAction("Menu Item 1");
-	QAction* actionItem2 = menu.addAction("Menu Item 2");
+	QAction* actionAddFolder = menu.addAction("Add Folder");
 
 	QAction* selected = menu.exec(mapToGlobal(pos));
-	if(selected == actionItem1)
+	if(selected == actionAddFolder)
 	{
-		qDebug() << "item1";
-	}
-	else if(selected == actionItem2)
-	{
-		qDebug() << "item2";
+		if(TextureListModel* mdl = static_cast<TextureListModel*>(model()))
+		{
+			QStandardItem* item = new QStandardItem("folder");
+			QModelIndex index = indexAt(pos);
+			if( auto parent = mdl->itemFromIndex(index) )
+			{
+				parent->insertRow( parent->rowCount(), item );
+				expand(mdl->indexFromItem(parent));
+			}
+			else
+			{
+				mdl->appendRow(item);
+			}
+
+			edit(mdl->indexFromItem(item));
+		}
 	}
 	else
 	{

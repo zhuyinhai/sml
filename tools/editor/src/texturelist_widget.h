@@ -6,10 +6,12 @@ namespace Ui {class TextureListWidget;}
 
 class TextureListModel;
 
+// -----------------------------------
+//  TextureListWidget
+// -----------------------------------
 class TextureListWidget : public QDockWidget
 {
 	Q_OBJECT
-
 public:
 	TextureListWidget(QWidget *parent = Q_NULLPTR);
 	~TextureListWidget();

@@ -64,9 +64,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_texturelist_model.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\texturelist_item.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\texturelist_view.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -106,9 +103,6 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_texturelist_widget.h">
       <Filter>GeneratedFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\texturelist_item.h">
-      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>GeneratedFiles</Filter>
