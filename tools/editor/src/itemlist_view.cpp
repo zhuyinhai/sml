@@ -4,13 +4,13 @@
 #include <QMimeData>
 #include <QMenu>
 
-#include "texturelist_view.h"
-#include "texturelist_model.h"
+#include "itemlist_view.h"
+#include "itemlist_model.h"
 
 // -----------------------------------
-//  TextureListView
+//  ItemListView
 // -----------------------------------
-TextureListView::TextureListView(QWidget *parent)
+ItemListView::ItemListView(QWidget *parent)
 	: QTreeView(parent)
 {
 	setAcceptDrops(true);
@@ -27,17 +27,17 @@ TextureListView::TextureListView(QWidget *parent)
 	setSelectionModel( new QItemSelectionModel(model(), this) );
 }
 
-TextureListView::~TextureListView(void)
+ItemListView::~ItemListView(void)
 {}
 
 #if 0
-void TextureListView::dragEnterEvent(QDragEnterEvent* e)
+void ItemListView::dragEnterEvent(QDragEnterEvent* e)
 {
 	e->acceptProposedAction();
 }
 #endif
 
-void TextureListView::dragMoveEvent(QDragMoveEvent* e)
+void ItemListView::dragMoveEvent(QDragMoveEvent* e)
 {
 	QModelIndex destIndex = indexAt(e->pos());
 	if(!destIndex.isValid())
@@ -45,7 +45,7 @@ void TextureListView::dragMoveEvent(QDragMoveEvent* e)
 		QTreeView::dragMoveEvent(e);
 		return;
 	}
-	if(auto mdl = qobject_cast<TextureListModel*>(model()))
+	if(auto mdl = static_cast<ItemListModel*>(model()))
 	{
 		const QStandardItem* destItem = mdl->itemFromIndex(destIndex);
 		for(auto index : selectedIndexes())
@@ -65,7 +65,7 @@ void TextureListView::dragMoveEvent(QDragMoveEvent* e)
 	e->acceptProposedAction();
 }
 
-void TextureListView::dropEvent(QDropEvent * e)
+void ItemListView::dropEvent(QDropEvent * e)
 {
 	QModelIndex droppedIndex = indexAt( e->pos() );
 
@@ -75,7 +75,7 @@ void TextureListView::dropEvent(QDropEvent * e)
 		return;
 	}
 
-	if(auto mdl = qobject_cast<TextureListModel*>(model()))
+	if(auto mdl = static_cast<ItemListModel*>(model()))
 	{
 		for( auto index : selectedIndexes() )
 		{
@@ -86,7 +86,7 @@ void TextureListView::dropEvent(QDropEvent * e)
 }
 
 
-void TextureListView::showContextMenu(const QPoint& pos)
+void ItemListView::showContextMenu(const QPoint& pos)
 {
 	QMenu menu;
 	QAction* actionAddFolder = menu.addAction("Add Folder");
@@ -94,7 +94,7 @@ void TextureListView::showContextMenu(const QPoint& pos)
 	QAction* selected = menu.exec(mapToGlobal(pos));
 	if(selected == actionAddFolder)
 	{
-		if(TextureListModel* mdl = static_cast<TextureListModel*>(model()))
+		if(auto mdl = static_cast<ItemListModel*>(model()))
 		{
 			QStandardItem* item = new QStandardItem("folder");
 			QModelIndex index = indexAt(pos);

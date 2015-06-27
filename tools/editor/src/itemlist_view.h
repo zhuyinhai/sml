@@ -4,15 +4,15 @@
 #include <QTreeView>
 
 // -----------------------------------
-//  TextureListView
+//  ItemListView
 // -----------------------------------
-class TextureListView : public QTreeView
+class ItemListView : public QTreeView
 {
 	Q_OBJECT
 
 public:
-	TextureListView(QWidget *parent = Q_NULLPTR);
-	virtual ~TextureListView(void);
+	ItemListView(QWidget *parent = Q_NULLPTR);
+	virtual ~ItemListView(void);
 
 	// void dragEnterEvent(QDragEnterEvent *) Q_DECL_OVERRIDE;
 	void dragMoveEvent(QDragMoveEvent* e) Q_DECL_OVERRIDE;

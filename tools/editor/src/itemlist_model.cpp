@@ -3,19 +3,19 @@
 #include <QStyle>
 #include <QDebug>
 
-#include "texturelist_model.h"
+#include "itemlist_model.h"
 
 // -----------------------------------
-//  TextureListModel
+//  ItemListModel
 // -----------------------------------
-TextureListModel::TextureListModel(QObject* parent)
+ItemListModel::ItemListModel(QObject* parent)
 	: QStandardItemModel(parent)
 {}
 
-TextureListModel::~TextureListModel(void)
+ItemListModel::~ItemListModel(void)
 {}
 
-QVariant TextureListModel::data(const QModelIndex &index, int role) const
+QVariant ItemListModel::data(const QModelIndex &index, int role) const
 {
 	if( index.isValid() && Qt::DecorationRole == role )
 	{
@@ -24,7 +24,7 @@ QVariant TextureListModel::data(const QModelIndex &index, int role) const
 	return QStandardItemModel::data(index, role);
 }
 
-Qt::ItemFlags TextureListModel::flags(const QModelIndex& index) const
+Qt::ItemFlags ItemListModel::flags(const QModelIndex& index) const
 {
 	Qt::ItemFlags flags;
 	if(index.isValid())
@@ -38,12 +38,12 @@ Qt::ItemFlags TextureListModel::flags(const QModelIndex& index) const
 	return flags;
 }
 
-Qt::DropActions TextureListModel::supportedDropActions(void) const
+Qt::DropActions ItemListModel::supportedDropActions(void) const
 {
 	return Qt::MoveAction;
 }
 
-bool TextureListModel::moveRows(const QModelIndex &sourceParent, int sourceRow, int count,
+bool ItemListModel::moveRows(const QModelIndex &sourceParent, int sourceRow, int count,
 	const QModelIndex &destinationParent, int destinationChild)
 {
 	if(QStandardItem* dest = itemFromIndex(destinationParent))

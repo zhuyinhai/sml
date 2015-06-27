@@ -6,7 +6,7 @@
 #include "main_window.h"
 #include "ui_main_window.h"
 
-#include "texturelist_widget.h"
+#include "itemlist_widget.h"
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -20,8 +20,8 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui_->actionSave, SIGNAL(triggered()), this, SLOT(actionSaveTriggered()));
 
 
-	textureListWidget_ = new TextureListWidget();
-	addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, textureListWidget_);
+	itemListWidget_ = new ItemListWidget();
+	addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, itemListWidget_);
 }
 
 MainWindow::~MainWindow()

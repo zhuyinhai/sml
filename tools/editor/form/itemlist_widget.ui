@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TextureListWidget</class>
- <widget class="QDockWidget" name="TextureListWidget">
+ <class>ItemListWidget</class>
+ <widget class="QDockWidget" name="ItemListWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,12 +11,12 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>TextureListWidget</string>
+   <string>ItemListWidget</string>
   </property>
   <widget class="QWidget" name="widget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="TextureListView" name="treeView"/>
+     <widget class="ItemListView" name="treeView"/>
     </item>
    </layout>
   </widget>
@@ -24,9 +24,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>TextureListView</class>
+   <class>ItemListView</class>
    <extends>QTreeView</extends>
-   <header>texturelist_view.h</header>
+   <header>itemlist_view.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

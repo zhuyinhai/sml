@@ -3,7 +3,7 @@
 #include <QMainWindow>
 
 namespace Ui{ class MainWindow; }
-class TextureListWidget;
+class ItemListWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -20,6 +20,6 @@ private slots:
 
 private:
 	Ui::MainWindow* ui_;
-	TextureListWidget* textureListWidget_;
+	ItemListWidget* itemListWidget_;
 };
 

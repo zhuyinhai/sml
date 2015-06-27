@@ -7,14 +7,14 @@ class TextureListItemBase;
 class TextureFolder;
 
 // -----------------------------------
-//  TextureListModel
+//  ItemListModel
 // -----------------------------------
-class TextureListModel : public QStandardItemModel
+class ItemListModel : public QStandardItemModel
 {
 	Q_OBJECT
 public:
-	TextureListModel(QObject* parent);
-	virtual ~TextureListModel(void);
+	ItemListModel(QObject* parent);
+	virtual ~ItemListModel(void);
 
 	QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
@@ -25,4 +25,4 @@ public:
 		const QModelIndex &destinationParent, int destinationChild) Q_DECL_OVERRIDE;
 };
 
-Q_DECLARE_METATYPE(TextureListModel*);
+Q_DECLARE_METATYPE(ItemListModel*);
