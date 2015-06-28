@@ -6,4 +6,13 @@
 #define NEW new
 #endif
 
-#define DELETE delete
+template<typename T>
+void SafeDelete(T*& ptr)
+{
+	if(ptr)
+	{
+		delete ptr;
+		ptr = nullptr;
+	}
+}
+

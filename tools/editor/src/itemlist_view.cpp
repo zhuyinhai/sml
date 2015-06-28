@@ -3,9 +3,15 @@
 #include <QDropEvent>
 #include <QMimeData>
 #include <QMenu>
+#include <QImageReader>
+
+#include "item/item_folder.h"
+#include "item/item_image.h"
+#include "item/item_handle.h"
 
 #include "itemlist_view.h"
 #include "itemlist_model.h"
+
 
 // -----------------------------------
 //  ItemListView
@@ -55,7 +61,24 @@ void ItemListView::dragMoveEvent(QDragMoveEvent* e)
 		if(auto mdl = static_cast<ItemListModel*>(model()))
 		{
 			const QStandardItem* destItem = mdl->itemFromIndex(destIndex);
-			for(auto index : selectedIndexes())
+			if( nullptr==destItem )
+			{
+				QTreeView::dragMoveEvent(e);
+				return;
+			}
+			ItemHandle handle = destItem->data().value<ItemHandle>();
+			if( handle.isNull() )
+			{
+				QTreeView::dragMoveEvent(e);
+				return;
+			}
+			if( ItemType::FOLDER != handle->getItemType() )
+			{
+				e->ignore();
+				return;
+			}
+
+			for(auto& index : selectedIndexes())
 			{
 				const QStandardItem* srcItem = mdl->itemFromIndex(index);
 				const QStandardItem* checkItem = destItem;
@@ -75,7 +98,31 @@ void ItemListView::dragMoveEvent(QDragMoveEvent* e)
 	{
 		if(e->mimeData()->hasUrls())
 		{
+			QModelIndex destIndex = indexAt(e->pos());
+			if(destIndex.isValid())
+			{
+				if(auto mdl = static_cast<ItemListModel*>(model()))
+				{
+					if( const QStandardItem* destItem = mdl->itemFromIndex(destIndex) )
+					{
+						ItemHandle handle = destItem->data().value<ItemHandle>();
+						if(!handle.isNull())
+						{
+							if( ItemType::FOLDER != handle->getItemType() )
+							{
+								e->ignore();
+								return;
+							}
+						}
+					}
+				}
+			}
+
 			e->accept();
+		}
+		else
+		{
+			e->ignore();
 		}
 	}
 }
@@ -105,15 +152,34 @@ void ItemListView::dropEvent(QDropEvent * e)
 	{
 		if(auto mdl = static_cast<ItemListModel*>(model()))
 		{
-			QStandardItem* item = NEW QStandardItem(mimeData->urls()[0].toString());
-			if(auto parent = mdl->itemFromIndex(droppedIndex))
+			for(auto& url : mimeData->urls())
 			{
-				parent->insertRow(parent->rowCount(), item);
-				expand(mdl->indexFromItem(parent));
-			}
-			else
-			{
-				mdl->appendRow(item);
+				if( !url.isLocalFile() )
+				{
+					continue;
+				}
+				QImageReader reader(url.toLocalFile());
+				if( !reader.canRead() )
+				{
+					continue;
+				}
+
+				QList<QStandardItem*> list;
+
+				auto item = NEW QStandardItem(url.fileName());
+				item->setData(QVariant::fromValue<ItemHandle>(ItemStore::create<ItemImage>(url)));
+				list.append(item);
+				list.append(NEW QStandardItem(url.toString()));
+
+				if(auto parent = mdl->itemFromIndex(droppedIndex))
+				{
+					parent->insertRow(parent->rowCount(), list);
+					expand(mdl->indexFromItem(parent));
+				}
+				else
+				{
+					mdl->appendRow(list);
+				}
 			}
 		}
 	}
@@ -131,6 +197,7 @@ void ItemListView::showContextMenu(const QPoint& pos)
 		if(auto mdl = static_cast<ItemListModel*>(model()))
 		{
 			QStandardItem* item = NEW QStandardItem("folder");
+			item->setData(QVariant::fromValue<ItemHandle>(ItemStore::create<ItemFolder>()));
 			QModelIndex index = indexAt(pos);
 			if( auto parent = mdl->itemFromIndex(index) )
 			{

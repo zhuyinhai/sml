@@ -13,16 +13,16 @@ class ItemListModel : public QStandardItemModel
 {
 	Q_OBJECT
 public:
-	ItemListModel(QObject* parent);
+	ItemListModel(QObject* parent = nullptr);
 	virtual ~ItemListModel(void);
 
-	QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
+	QVariant data(const QModelIndex &index, int role) const override;
 
-	Qt::ItemFlags flags(const QModelIndex& index) const Q_DECL_OVERRIDE;
-	Qt::DropActions supportedDropActions(void) const Q_DECL_OVERRIDE;
+	Qt::ItemFlags flags(const QModelIndex& index) const override;
+	Qt::DropActions supportedDropActions(void) const override;
 
 	bool moveRows(const QModelIndex &sourceParent, int sourceRow, int count,
-		const QModelIndex &destinationParent, int destinationChild) Q_DECL_OVERRIDE;
+		const QModelIndex &destinationParent, int destinationChild) override;
 };
 
 Q_DECLARE_METATYPE(ItemListModel*);

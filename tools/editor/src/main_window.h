@@ -10,8 +10,8 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	MainWindow(QWidget *parent = Q_NULLPTR);
-	~MainWindow();
+	MainWindow(QWidget *parent = nullptr);
+	~MainWindow(void);
 
 private slots:
 	void actionNewTriggered(void);

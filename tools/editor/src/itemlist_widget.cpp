@@ -18,6 +18,6 @@ ItemListWidget::ItemListWidget(QWidget *parent)
 
 ItemListWidget::~ItemListWidget()
 {
-	DELETE ui_;
+	::SafeDelete(ui_);
 }
 

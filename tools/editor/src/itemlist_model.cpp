@@ -3,6 +3,9 @@
 #include <QStyle>
 #include <QDebug>
 
+#include "item/item_base.h"
+#include "item/item_handle.h"
+
 #include "itemlist_model.h"
 
 // -----------------------------------
@@ -19,7 +22,14 @@ QVariant ItemListModel::data(const QModelIndex &index, int role) const
 {
 	if( index.isValid() && Qt::DecorationRole == role )
 	{
-		return QApplication::style()->standardIcon(QStyle::SP_DirOpenIcon);
+		if( auto item = itemFromIndex(index) )
+		{
+			auto data = item->data().value<ItemHandle>();
+			if( !data.isNull() )
+			{
+				return data->getDecorationRole();
+			}
+		}
 	}
 	return QStandardItemModel::data(index, role);
 }

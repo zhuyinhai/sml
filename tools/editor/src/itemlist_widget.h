@@ -13,8 +13,8 @@ class ItemListWidget : public QDockWidget
 {
 	Q_OBJECT
 public:
-	ItemListWidget(QWidget *parent = Q_NULLPTR);
-	~ItemListWidget();
+	ItemListWidget(QWidget *parent = nullptr);
+	~ItemListWidget(void);
 
 private:
 	Ui::ItemListWidget *ui_;

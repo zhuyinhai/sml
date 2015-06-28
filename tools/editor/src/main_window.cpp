@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-	DELETE ui_;
+	::SafeDelete(ui_);
 }
 
 void MainWindow::actionNewTriggered(void)

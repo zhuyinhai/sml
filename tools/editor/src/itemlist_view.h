@@ -11,12 +11,12 @@ class ItemListView : public QTreeView
 	Q_OBJECT
 
 public:
-	ItemListView(QWidget *parent = Q_NULLPTR);
+	ItemListView(QWidget *parent = nullptr);
 	virtual ~ItemListView(void);
 
-	void dragEnterEvent(QDragEnterEvent *) Q_DECL_OVERRIDE;
-	void dragMoveEvent(QDragMoveEvent* e) Q_DECL_OVERRIDE;
-	void dropEvent(QDropEvent *) Q_DECL_OVERRIDE;
+	void dragEnterEvent(QDragEnterEvent *) override;
+	void dragMoveEvent(QDragMoveEvent* e) override;
+	void dropEvent(QDropEvent *) override;
 
 public slots:
 	void showContextMenu(const QPoint& pos);

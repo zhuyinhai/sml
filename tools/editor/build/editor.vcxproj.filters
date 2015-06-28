@@ -29,6 +29,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;cxx;c;def</Extensions>
     </Filter>
+    <Filter Include="src\item">
+      <UniqueIdentifier>{a56dbc31-2845-4aea-bb2c-ac809879307f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\qrc_editor.cpp">
@@ -74,6 +77,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="..\src\item\item_handle.cpp">
+      <Filter>src\item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="editor.qrc">
@@ -109,5 +115,17 @@
       <Filter>GeneratedFiles</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="..\src\item\item_base.h">
+      <Filter>src\item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\item\item_folder.h">
+      <Filter>src\item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\item\item_image.h">
+      <Filter>src\item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\item\item_handle.h">
+      <Filter>src\item</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
