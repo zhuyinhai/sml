@@ -17,70 +17,104 @@ ItemListView::ItemListView(QWidget *parent)
 	setDragEnabled(true);
 	setDragDropOverwriteMode(false);
 	setDropIndicatorShown(true);
-	setDragDropMode(QAbstractItemView::InternalMove);
+	setDragDropMode(QAbstractItemView::DragDrop);
 	setDefaultDropAction(Qt::MoveAction);
 
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
 		this, SLOT(showContextMenu(const QPoint&)));
-
-	setSelectionModel( new QItemSelectionModel(model(), this) );
 }
 
 ItemListView::~ItemListView(void)
 {}
 
-#if 0
+
 void ItemListView::dragEnterEvent(QDragEnterEvent* e)
 {
-	e->acceptProposedAction();
+	if(e->mimeData()->hasUrls())
+	{
+		e->acceptProposedAction();
+		return;
+	}
+
+	QTreeView::dragEnterEvent(e);
 }
-#endif
+
 
 void ItemListView::dragMoveEvent(QDragMoveEvent* e)
 {
-	QModelIndex destIndex = indexAt(e->pos());
-	if(!destIndex.isValid())
+	// internal move 
+	if( this == e->source() )
 	{
-		QTreeView::dragMoveEvent(e);
-		return;
-	}
-	if(auto mdl = static_cast<ItemListModel*>(model()))
-	{
-		const QStandardItem* destItem = mdl->itemFromIndex(destIndex);
-		for(auto index : selectedIndexes())
+		QModelIndex destIndex = indexAt(e->pos());
+		if(!destIndex.isValid())
 		{
-			const QStandardItem* srcItem = mdl->itemFromIndex(index);
-			const QStandardItem* checkItem = destItem;
-			do
+			QTreeView::dragMoveEvent(e);
+			return;
+		}
+		if(auto mdl = static_cast<ItemListModel*>(model()))
+		{
+			const QStandardItem* destItem = mdl->itemFromIndex(destIndex);
+			for(auto index : selectedIndexes())
 			{
-				if(srcItem == checkItem)
+				const QStandardItem* srcItem = mdl->itemFromIndex(index);
+				const QStandardItem* checkItem = destItem;
+				do
 				{
-					e->ignore();
-					return;
-				}
-			} while(checkItem = checkItem->parent());
+					if(srcItem == checkItem)
+					{
+						e->ignore();
+						return;
+					}
+				} while(checkItem = checkItem->parent());
+			}
+		}
+		e->acceptProposedAction();
+	}
+	else if(const QMimeData* mimeData = e->mimeData())
+	{
+		if(e->mimeData()->hasUrls())
+		{
+			e->accept();
 		}
 	}
-	e->acceptProposedAction();
 }
 
 void ItemListView::dropEvent(QDropEvent * e)
 {
 	QModelIndex droppedIndex = indexAt( e->pos() );
 
-	if(!droppedIndex.isValid())
+	if(this == e->source())
 	{
-		QTreeView::dropEvent(e);
-		return;
-	}
-
-	if(auto mdl = static_cast<ItemListModel*>(model()))
-	{
-		for( auto index : selectedIndexes() )
+		if(!droppedIndex.isValid())
 		{
-			mdl->moveRows( index.parent(), index.row(), 1, droppedIndex, 0 );
-			break;
+			QTreeView::dropEvent(e);
+			return;
+		}
+
+		if(auto mdl = static_cast<ItemListModel*>(model()))
+		{
+			for( auto index : selectedIndexes() )
+			{
+				mdl->moveRows( index.parent(), index.row(), 1, droppedIndex, 0 );
+				break;
+			}
+		}
+	}
+	else if(const QMimeData* mimeData = e->mimeData())
+	{
+		if(auto mdl = static_cast<ItemListModel*>(model()))
+		{
+			QStandardItem* item = NEW QStandardItem(mimeData->urls()[0].toString());
+			if(auto parent = mdl->itemFromIndex(droppedIndex))
+			{
+				parent->insertRow(parent->rowCount(), item);
+				expand(mdl->indexFromItem(parent));
+			}
+			else
+			{
+				mdl->appendRow(item);
+			}
 		}
 	}
 }
@@ -96,7 +130,7 @@ void ItemListView::showContextMenu(const QPoint& pos)
 	{
 		if(auto mdl = static_cast<ItemListModel*>(model()))
 		{
-			QStandardItem* item = new QStandardItem("folder");
+			QStandardItem* item = NEW QStandardItem("folder");
 			QModelIndex index = indexAt(pos);
 			if( auto parent = mdl->itemFromIndex(index) )
 			{

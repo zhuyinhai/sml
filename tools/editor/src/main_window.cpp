@@ -11,7 +11,7 @@
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
-	ui_ = new Ui::MainWindow();
+	ui_ = NEW Ui::MainWindow();
 
 	ui_->setupUi(this);
 
@@ -20,13 +20,13 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui_->actionSave, SIGNAL(triggered()), this, SLOT(actionSaveTriggered()));
 
 
-	itemListWidget_ = new ItemListWidget();
+	itemListWidget_ = NEW ItemListWidget();
 	addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, itemListWidget_);
 }
 
 MainWindow::~MainWindow()
 {
-
+	DELETE ui_;
 }
 
 void MainWindow::actionNewTriggered(void)

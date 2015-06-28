@@ -8,15 +8,16 @@
 ItemListWidget::ItemListWidget(QWidget *parent)
 	: QDockWidget(parent)
 {
-	ui_ = new Ui::ItemListWidget();
+	ui_ = NEW Ui::ItemListWidget();
 	ui_->setupUi(this);
 
-	itemListModel_ = new ItemListModel(this);
+	itemListModel_ = NEW ItemListModel(this);
 	ui_->treeView->setModel(itemListModel_);
+	ui_->treeView->setSelectionModel(NEW QItemSelectionModel(itemListModel_));
 }
 
 ItemListWidget::~ItemListWidget()
 {
-	delete ui_;
+	DELETE ui_;
 }
 
