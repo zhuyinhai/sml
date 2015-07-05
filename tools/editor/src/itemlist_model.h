@@ -13,7 +13,7 @@ class ItemListModel : public QStandardItemModel
 {
 	Q_OBJECT
 public:
-	ItemListModel(QObject* parent = nullptr);
+	explicit ItemListModel(QObject* parent = nullptr);
 	virtual ~ItemListModel(void);
 
 	QVariant data(const QModelIndex &index, int role) const override;

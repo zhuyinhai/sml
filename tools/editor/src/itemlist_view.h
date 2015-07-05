@@ -11,7 +11,7 @@ class ItemListView : public QTreeView
 	Q_OBJECT
 
 public:
-	ItemListView(QWidget *parent = nullptr);
+	explicit ItemListView(QWidget *parent = nullptr);
 	virtual ~ItemListView(void);
 
 	void dragEnterEvent(QDragEnterEvent *) override;

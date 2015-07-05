@@ -7,6 +7,7 @@
 
 #include "item/item_folder.h"
 #include "item/item_image.h"
+#include "item/item_composition.h"
 #include "item/item_handle.h"
 
 #include "itemlist_view.h"
@@ -166,10 +167,10 @@ void ItemListView::dropEvent(QDropEvent * e)
 
 				QList<QStandardItem*> list;
 
-				auto item = NEW QStandardItem(url.fileName());
+				auto item = new QStandardItem(url.fileName());
 				item->setData(QVariant::fromValue<ItemHandle>(ItemStore::create<ItemImage>(url)));
 				list.append(item);
-				list.append(NEW QStandardItem(url.toString()));
+				list.append(new QStandardItem(url.toString()));
 
 				if(auto parent = mdl->itemFromIndex(droppedIndex))
 				{
@@ -188,29 +189,42 @@ void ItemListView::dropEvent(QDropEvent * e)
 
 void ItemListView::showContextMenu(const QPoint& pos)
 {
-	QMenu menu;
-	QAction* actionAddFolder = menu.addAction("Add Folder");
+	auto addItem =[this, &pos](const char* name, ItemHandle hItem){
+		auto mdl = static_cast<ItemListModel*>(model());
+		if(nullptr==mdl)
+		{
+			return;
+		}
+		QStandardItem* item = new QStandardItem(name);
+		item->setData(QVariant::fromValue<ItemHandle>(hItem));
+		QModelIndex index = indexAt(pos);
+		if(auto parent = mdl->itemFromIndex(index))
+		{
+			parent->insertRow(parent->rowCount(), item);
+			expand(mdl->indexFromItem(parent));
+		}
+		else
+		{
+			mdl->appendRow(item);
+		}
+		edit(mdl->indexFromItem(item));
+	};
 
-	QAction* selected = menu.exec(mapToGlobal(pos));
+
+	using CQActPtr = const QAction* const;
+
+	QMenu menu;
+	CQActPtr actionAddFolder = menu.addAction("Add Folder");
+	CQActPtr actionAddComposition = menu.addAction("Add Composition");
+	CQActPtr selected = menu.exec(mapToGlobal(pos));
+
 	if(selected == actionAddFolder)
 	{
-		if(auto mdl = static_cast<ItemListModel*>(model()))
-		{
-			QStandardItem* item = NEW QStandardItem("folder");
-			item->setData(QVariant::fromValue<ItemHandle>(ItemStore::create<ItemFolder>()));
-			QModelIndex index = indexAt(pos);
-			if( auto parent = mdl->itemFromIndex(index) )
-			{
-				parent->insertRow( parent->rowCount(), item );
-				expand(mdl->indexFromItem(parent));
-			}
-			else
-			{
-				mdl->appendRow(item);
-			}
-
-			edit(mdl->indexFromItem(item));
-		}
+		addItem("folder", ItemStore::create<ItemFolder>());
+	}
+	else if(selected == actionAddComposition)
+	{
+		addItem("composition", ItemStore::create<ItemComposition>());
 	}
 	else
 	{

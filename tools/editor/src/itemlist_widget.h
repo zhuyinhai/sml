@@ -13,7 +13,7 @@ class ItemListWidget : public QDockWidget
 {
 	Q_OBJECT
 public:
-	ItemListWidget(QWidget *parent = nullptr);
+	explicit ItemListWidget(QWidget *parent = nullptr);
 	~ItemListWidget(void);
 
 private:

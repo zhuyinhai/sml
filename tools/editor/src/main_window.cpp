@@ -7,11 +7,15 @@
 #include "ui_main_window.h"
 
 #include "itemlist_widget.h"
+#include "keyframe_widget.h"
 
+// -----------------------------------
+//  MainWindow
+// -----------------------------------
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
-	ui_ = NEW Ui::MainWindow();
+	ui_ = new Ui::MainWindow();
 
 	ui_->setupUi(this);
 
@@ -19,9 +23,14 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui_->actionOpen, SIGNAL(triggered()), this, SLOT(actionOpenTriggered()));
 	connect(ui_->actionSave, SIGNAL(triggered()), this, SLOT(actionSaveTriggered()));
 
-
-	itemListWidget_ = NEW ItemListWidget();
+	// -- 
+	itemListWidget_ = new ItemListWidget();
 	addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, itemListWidget_);
+
+	// --
+	keyframeWidget_ = new KeyframeWidget();
+	addDockWidget(Qt::DockWidgetArea::BottomDockWidgetArea, keyframeWidget_);
+
 }
 
 MainWindow::~MainWindow()

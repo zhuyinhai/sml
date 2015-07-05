@@ -80,6 +80,27 @@
     <ClCompile Include="..\src\item\item_handle.cpp">
       <Filter>src\item</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\keyframe_widget.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_keyframe_widget.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_keyframe_widget.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\keyframe_view.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_keyframe_view.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_keyframe_view.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\keyframe_delegate.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="editor.qrc">
@@ -101,6 +122,15 @@
       <Filter>src</Filter>
     </CustomBuild>
     <CustomBuild Include="..\src\itemlist_model.h">
+      <Filter>src</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\form\keyframe_widget.ui">
+      <Filter>form</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\src\keyframe_widget.h">
+      <Filter>src</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\src\keyframe_view.h">
       <Filter>src</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -126,6 +156,15 @@
     </ClInclude>
     <ClInclude Include="..\src\item\item_handle.h">
       <Filter>src\item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\item\item_composition.h">
+      <Filter>src\item</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_keyframe_widget.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\keyframe_delegate.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

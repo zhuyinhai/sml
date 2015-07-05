@@ -78,7 +78,7 @@ static ItemHandle ItemStore::create(Arg... args)
 		if( nullptr == data[i].item )
 		{
 			data[i].magic = ++(handle().magic_);
-			data[i].item = NEW T(args...);
+			data[i].item = new T(args...);
 			return ItemHandle(i, data[i].magic);
 		}
 	}
