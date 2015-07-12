@@ -22,13 +22,10 @@ QVariant ItemListModel::data(const QModelIndex &index, int role) const
 {
 	if( index.isValid() && Qt::DecorationRole == role )
 	{
-		if( auto item = itemFromIndex(index) )
+		ItemHandle hItem = getItem(index);
+		if(!hItem.isNull())
 		{
-			auto data = item->data().value<ItemHandle>();
-			if( !data.isNull() )
-			{
-				return data->getDecorationRole();
-			}
+			return hItem->getDecorationRole();
 		}
 	}
 	return QStandardItemModel::data(index, role);
@@ -77,3 +74,18 @@ bool ItemListModel::moveRows(const QModelIndex &sourceParent, int sourceRow, int
 	return true;
 }
 
+
+ItemHandle ItemListModel::getItem(const QModelIndex& index) const
+{
+	if( !index.isValid() )
+	{
+		return ItemHandle();
+	}
+
+	if(auto item = itemFromIndex(index))
+	{
+		return item->data().value<ItemHandle>();
+	}
+
+	return ItemHandle();
+}

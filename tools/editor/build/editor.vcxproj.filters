@@ -101,6 +101,15 @@
     <ClCompile Include="..\src\keyframe_delegate.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\item\item_comopsition.cpp">
+      <Filter>src\item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\item\item_image.cpp">
+      <Filter>src\item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\item_view.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="editor.qrc">
@@ -164,6 +173,9 @@
       <Filter>GeneratedFiles</Filter>
     </ClInclude>
     <ClInclude Include="..\src\keyframe_delegate.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\item_view.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

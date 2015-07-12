@@ -3,6 +3,8 @@
 #include <QDomDocument>
 #include <QFileDialog>
 
+#include <QGraphicsItem>
+
 #include "main_window.h"
 #include "ui_main_window.h"
 
@@ -31,10 +33,15 @@ MainWindow::MainWindow(QWidget *parent)
 	keyframeWidget_ = new KeyframeWidget();
 	addDockWidget(Qt::DockWidgetArea::BottomDockWidgetArea, keyframeWidget_);
 
+	// 
+	graphicsScene_ = new QGraphicsScene(this);
+	ui_->graphicsView->setScene(graphicsScene_);
+
 }
 
 MainWindow::~MainWindow()
 {
+	// 
 	::SafeDelete(ui_);
 }
 

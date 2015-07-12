@@ -2,9 +2,11 @@
 
 #include <QAbstractItemModel>
 #include <QStandardItem>
+#include "item/item_handle.h"
 
 class TextureListItemBase;
 class TextureFolder;
+
 
 // -----------------------------------
 //  ItemListModel
@@ -23,6 +25,9 @@ public:
 
 	bool moveRows(const QModelIndex &sourceParent, int sourceRow, int count,
 		const QModelIndex &destinationParent, int destinationChild) override;
+
+
+	ItemHandle getItem(const QModelIndex& index) const;
 };
 
 Q_DECLARE_METATYPE(ItemListModel*);

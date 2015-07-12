@@ -17,6 +17,28 @@
    <property name="contextMenuPolicy">
     <enum>Qt::DefaultContextMenu</enum>
    </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox"/>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="ItemView" name="graphicsView"/>
+    </item>
+   </layout>
+   <zorder>graphicsView</zorder>
+   <zorder>label</zorder>
+   <zorder>comboBox</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -75,6 +97,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>ItemView</class>
+   <extends>QGraphicsView</extends>
+   <header>item_view.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../build/editor.qrc"/>
  </resources>

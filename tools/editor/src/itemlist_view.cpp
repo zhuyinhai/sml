@@ -1,4 +1,6 @@
 
+#include "itemlist_view.h"
+
 #include <QDebug>
 #include <QDropEvent>
 #include <QMimeData>
@@ -10,7 +12,6 @@
 #include "item/item_composition.h"
 #include "item/item_handle.h"
 
-#include "itemlist_view.h"
 #include "itemlist_model.h"
 
 
@@ -24,12 +25,16 @@ ItemListView::ItemListView(QWidget *parent)
 	setDragEnabled(true);
 	setDragDropOverwriteMode(false);
 	setDropIndicatorShown(true);
-	setDragDropMode(QAbstractItemView::DragDrop);
+	setDragDropMode(QAbstractItemView::InternalMove);
 	setDefaultDropAction(Qt::MoveAction);
 
 	setContextMenuPolicy(Qt::CustomContextMenu);
+
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
 		this, SLOT(showContextMenu(const QPoint&)));
+
+	connect(this, SIGNAL(doubleClicked(const QModelIndex&)),
+		this, SLOT(onDoubleClicked(const QModelIndex&)));
 }
 
 ItemListView::~ItemListView(void)
@@ -170,7 +175,6 @@ void ItemListView::dropEvent(QDropEvent * e)
 				auto item = new QStandardItem(url.fileName());
 				item->setData(QVariant::fromValue<ItemHandle>(ItemStore::create<ItemImage>(url)));
 				list.append(item);
-				list.append(new QStandardItem(url.toString()));
 
 				if(auto parent = mdl->itemFromIndex(droppedIndex))
 				{
@@ -230,4 +234,10 @@ void ItemListView::showContextMenu(const QPoint& pos)
 	{
 		// nothing was chosen
 	}
+}
+
+
+void ItemListView::onDoubleClicked(const QModelIndex &index)
+{
+	qDebug() << "test";
 }

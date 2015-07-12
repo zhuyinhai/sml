@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QGraphicsScene>
 
 namespace Ui{ class MainWindow; }
 class ItemListWidget;
@@ -26,5 +27,7 @@ private:
 	Ui::MainWindow* ui_;
 	ItemListWidget* itemListWidget_;
 	KeyframeWidget* keyframeWidget_;
+
+	QGraphicsScene* graphicsScene_;
 };
 

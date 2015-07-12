@@ -2,7 +2,6 @@
 
 #include "item/item_base.h"
 #include <QUrl>
-#include <QVariant>
 
 // -----------------------------------
 //  ItemImage
@@ -15,25 +14,11 @@ public:
 
 	QVariant getDecorationRole(void) const override;
 	ItemType getItemType(void) const override;
+	Qt::ItemFlags flags(void) const override;
+
+	QGraphicsItem* add(QGraphicsScene* graphicsScene) override;
 
 private:
-	QIcon image_;
+	QUrl url_;
 };
 
-
-// -- inline implement -----------------
-
-inline ItemImage::ItemImage(const QUrl& url)
-	: image_(url.toLocalFile())
-{}
-
-
-inline QVariant ItemImage::getDecorationRole(void) const
-{
-	return image_;
-}
-
-inline ItemType ItemImage::getItemType(void) const
-{
-	return ItemType::IMAGE;
-}

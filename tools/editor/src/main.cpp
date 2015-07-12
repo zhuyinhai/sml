@@ -1,5 +1,7 @@
 
-#include <QtWidgets/QApplication>
+#include <QApplication>
+#include <QStyleFactory>
+#include <QDebug>
 
 #if  defined(_MSC_VER)
 #include <vld.h>

@@ -16,6 +16,9 @@ public:
 
 	QVariant getDecorationRole(void) const override;
 	ItemType getItemType(void) const override;
+	Qt::ItemFlags flags(void) const override;
+
+	QGraphicsItem* add(QGraphicsScene* graphicsScene) override;
 };
 
 
@@ -31,4 +34,12 @@ inline ItemType ItemFolder::getItemType(void) const
 	return ItemType::FOLDER;
 }
 
+inline Qt::ItemFlags ItemFolder::flags(void) const
+{
+	return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsEditable;
+}
 
+inline QGraphicsItem* ItemFolder::add(QGraphicsScene* /*graphicsScene*/)
+{
+	return nullptr;
+}
