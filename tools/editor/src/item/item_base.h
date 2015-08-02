@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QVariant>
+#include <QDebug>
 
 class QGraphicsItem;
 class QGraphicsScene;
@@ -24,12 +25,34 @@ enum class ItemType
 class ItemBase
 {
 public:
+	ItemBase(void);
 	virtual ~ItemBase(void) = default;
 
 	virtual QVariant getDecorationRole(void) const = 0;
 	virtual ItemType getItemType(void) const = 0;
 	virtual Qt::ItemFlags flags(void) const = 0;
 
-	// double dispath function
-	virtual QGraphicsItem* add(QGraphicsScene* graphicsScene) = 0;
+	virtual QGraphicsItem* getGraphicsItem(void) = 0;
+
+	void setName(const QString& name);
+	const QString& getName(void) const;
+
+private:
+	QString name_;
 };
+
+
+// -- implement 
+
+inline ItemBase::ItemBase(void)
+{}
+
+inline void ItemBase::setName(const QString& name)
+{
+	name_ = name;
+}
+
+inline const QString& ItemBase::getName(void) const
+{
+	return name_;
+}

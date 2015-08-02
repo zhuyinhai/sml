@@ -2,6 +2,7 @@
 #pragma once
 
 #include <QTreeView>
+#include "item/item_handle.h"
 
 // -----------------------------------
 //  ItemListView
@@ -17,6 +18,9 @@ public:
 	void dragEnterEvent(QDragEnterEvent* e) override;
 	void dragMoveEvent(QDragMoveEvent* e) override;
 	void dropEvent(QDropEvent *) override;
+
+signals:
+	void onItemSelected(ItemHandle hItem);
 
 public slots:
 	void showContextMenu(const QPoint& pos);

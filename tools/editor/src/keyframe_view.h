@@ -3,6 +3,8 @@
 
 #include <QTreeView>
 
+#include "item/item_handle.h"
+
 // -----------------------------------
 //  KeyframeView
 // -----------------------------------
@@ -13,5 +15,7 @@ public:
 	explicit KeyframeView(QWidget *parent = nullptr);
 	virtual ~KeyframeView(void);
 
+public slots:
+	void onItemSelected(ItemHandle hItem);
 };
 

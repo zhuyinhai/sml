@@ -2,8 +2,7 @@
 #include "item/item_image.h"
 
 #include <QIcon>
-#include <QGraphicsScene>
-#include <QGraphicsItem>
+#include <QGraphicsPixmapItem>
 
 
 // -----------------------------------
@@ -11,6 +10,7 @@
 // -----------------------------------
 ItemImage::ItemImage(const QUrl& url)
 	: url_(url)
+	, pixmapItem_(nullptr)
 {}
 
 
@@ -29,11 +29,7 @@ Qt::ItemFlags ItemImage::flags(void) const
 	return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsEditable;
 }
 
-QGraphicsItem* ItemImage::add(QGraphicsScene* graphicsScene)
+QGraphicsItem* ItemImage::getGraphicsItem(void)
 {
-	if(!graphicsScene)
-	{
-		return nullptr;
-	}
-	return graphicsScene->addPixmap(QPixmap(url_.toLocalFile()));
+	return new QGraphicsPixmapItem( QPixmap(url_.toLocalFile()) );
 }

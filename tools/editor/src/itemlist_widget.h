@@ -5,6 +5,7 @@
 namespace Ui {class ItemListWidget;}
 
 class ItemListModel;
+class ItemListView;
 
 // -----------------------------------
 //  ItemListWidget
@@ -15,6 +16,8 @@ class ItemListWidget : public QDockWidget
 public:
 	explicit ItemListWidget(QWidget *parent = nullptr);
 	~ItemListWidget(void);
+
+	ItemListView* getItemListView(void);
 
 private:
 	Ui::ItemListWidget *ui_;

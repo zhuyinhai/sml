@@ -107,8 +107,32 @@
     <ClCompile Include="..\src\item\item_image.cpp">
       <Filter>src\item</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\composition_dialog.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_composition_dialog.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_composition_dialog.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\item_view.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_item_view.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_item_view.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\keyframe_model.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_keyframe_model.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_keyframe_model.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -140,6 +164,18 @@
       <Filter>src</Filter>
     </CustomBuild>
     <CustomBuild Include="..\src\keyframe_view.h">
+      <Filter>src</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\form\composition_dialog.ui">
+      <Filter>form</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\src\composition_dialog.h">
+      <Filter>src</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\src\item_view.h">
+      <Filter>src</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\src\keyframe_model.h">
       <Filter>src</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -175,8 +211,11 @@
     <ClInclude Include="..\src\keyframe_delegate.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\item_view.h">
-      <Filter>src</Filter>
+    <ClInclude Include="GeneratedFiles\ui_composition_dialog.h">
+      <Filter>GeneratedFiles</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="editor.rc" />
   </ItemGroup>
 </Project>

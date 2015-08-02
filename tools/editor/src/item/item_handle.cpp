@@ -1,5 +1,6 @@
 
 #include "item/item_handle.h"
+#include "item/item_base.h"
 
 #include <limits>
 #include <algorithm>

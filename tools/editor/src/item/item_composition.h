@@ -12,6 +12,23 @@
 class QGraphicsScene;
 
 // -----------------------------------
+//  Layer
+// -----------------------------------
+struct Layer
+{
+	ItemHandle hItem;
+	QPointF position;
+	QPointF anchor;
+	QSizeF scale;
+	qreal rotate;
+	QColor color;
+
+	QGraphicsItem* itemPtr;
+};
+
+
+
+// -----------------------------------
 //  ItemComposition
 // -----------------------------------
 class ItemComposition : public ItemBase
@@ -24,26 +41,14 @@ public:
 	ItemType getItemType(void) const override;
 	Qt::ItemFlags flags(void) const override;
 
-	QGraphicsItem* add(QGraphicsScene* graphicsScene) override;
+	QGraphicsItem* getGraphicsItem(void) override;
 
 	QGraphicsScene* getGraphicsScene(void);
 	void addItem(ItemHandle hItem);
 
 private:
-
-	struct Data
-	{
-		ItemHandle hItem;
-		QPointF pos;
-		QPointF anchor;
-		QSizeF size;
-		qreal rotate;
-		QColor color;
-	};
-
 	QGraphicsScene* graphicsScene_;
-	QSize size_;
-	QList<Data> itemList_;
+	QList<Layer> layers_;
 };
 
 

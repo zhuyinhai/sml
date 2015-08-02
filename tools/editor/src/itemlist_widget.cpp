@@ -21,3 +21,7 @@ ItemListWidget::~ItemListWidget()
 	::SafeDelete(ui_);
 }
 
+ItemListView* ItemListWidget::getItemListView(void)
+{
+	return ui_->treeView;
+}

@@ -34,13 +34,9 @@ Qt::ItemFlags ItemComposition::flags(void) const
 }
 
 
-QGraphicsItem* ItemComposition::add(QGraphicsScene* graphicsScene)
+QGraphicsItem* ItemComposition::getGraphicsItem(void)
 {
-	if(!graphicsScene)
-	{
-		return nullptr;
-	}
-	return graphicsScene->addRect( QRectF() );
+	return nullptr;
 }
 
 
@@ -49,6 +45,8 @@ QGraphicsScene* ItemComposition::getGraphicsScene(void)
 	if(!graphicsScene_)
 	{
 		graphicsScene_ = new QGraphicsScene();
+		graphicsScene_->addLine(QLineF(QPointF(0.0, 0.0), QPointF(100.0, 0.0)));
+		graphicsScene_->addLine(QLineF(QPointF(0.0, 0.0), QPointF(.0, 100.0)));
 	}
 
 	return graphicsScene_;
@@ -61,22 +59,27 @@ void ItemComposition::addItem(ItemHandle hItem)
 		return;
 	}
 
-	Data data = {
+	QGraphicsItem* item = hItem->getGraphicsItem();
+	if(!item)
+	{
+		return;
+	}
+	item->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
+
+	Layer layer = {
 		hItem,
 		QPointF(),
 		QPointF(),
 		QSizeF(),
 		qreal(),
-		QColor()
+		QColor(),
+		item
 	};
 
-	itemList_.append(data);
+	layers_.append(layer);
 
-	if(!graphicsScene_)
-	{
-		return;
-	}
-
+	QGraphicsScene* scene = getGraphicsScene();
+	scene->addItem(item);
 }
 
 

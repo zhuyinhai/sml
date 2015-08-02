@@ -13,7 +13,9 @@
 // -----------------------------------
 ItemListModel::ItemListModel(QObject* parent)
 	: QStandardItemModel(parent)
-{}
+{
+	connect(this, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(onItemChangedCallback(QStandardItem*)));
+}
 
 ItemListModel::~ItemListModel(void)
 {}
@@ -33,21 +35,12 @@ QVariant ItemListModel::data(const QModelIndex &index, int role) const
 
 Qt::ItemFlags ItemListModel::flags(const QModelIndex& index) const
 {
-	Qt::ItemFlags flags;
-	if(index.isValid())
+	ItemHandle hItem = getItem(index);
+	if(hItem.isNull())
 	{
-		flags = Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsEditable;
+		return Qt::NoItemFlags;
 	}
-	else
-	{
-		flags = Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEnabled;
-	}
-	return flags;
-}
-
-Qt::DropActions ItemListModel::supportedDropActions(void) const
-{
-	return Qt::MoveAction;
+	return hItem->flags();
 }
 
 bool ItemListModel::moveRows(const QModelIndex &sourceParent, int sourceRow, int count,
@@ -88,4 +81,16 @@ ItemHandle ItemListModel::getItem(const QModelIndex& index) const
 	}
 
 	return ItemHandle();
+}
+
+void ItemListModel::onItemChangedCallback(QStandardItem* item)
+{
+	ItemHandle hItem = item->data().value<ItemHandle>();
+	if(hItem.isNull())
+	{
+		return;
+	}
+	QString name = item->data(Qt::DisplayRole).toString();
+	hItem->setName(name);
+	qDebug() << name;
 }

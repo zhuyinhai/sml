@@ -14,6 +14,8 @@
 
 #include "itemlist_model.h"
 
+#include "composition_dialog.h"
+
 
 // -----------------------------------
 //  ItemListView
@@ -61,7 +63,8 @@ void ItemListView::dragMoveEvent(QDragMoveEvent* e)
 		QModelIndex destIndex = indexAt(e->pos());
 		if(!destIndex.isValid())
 		{
-			QTreeView::dragMoveEvent(e);
+			e->acceptProposedAction();
+			// QTreeView::dragMoveEvent(e);
 			return;
 		}
 		if(auto mdl = static_cast<ItemListModel*>(model()))
@@ -193,15 +196,18 @@ void ItemListView::dropEvent(QDropEvent * e)
 
 void ItemListView::showContextMenu(const QPoint& pos)
 {
-	auto addItem =[this, &pos](const char* name, ItemHandle hItem){
-		auto mdl = static_cast<ItemListModel*>(model());
-		if(nullptr==mdl)
-		{
-			return;
-		}
+	auto mdl = static_cast<ItemListModel*>(model());
+	if(nullptr == mdl)
+	{
+		return;
+	}
+
+	QModelIndex index = indexAt(pos);
+	ItemHandle hItem = mdl->getItem(index);
+
+	auto addItem =[this, mdl, index](const char* name, ItemHandle hItem)->QStandardItem*{
 		QStandardItem* item = new QStandardItem(name);
 		item->setData(QVariant::fromValue<ItemHandle>(hItem));
-		QModelIndex index = indexAt(pos);
 		if(auto parent = mdl->itemFromIndex(index))
 		{
 			parent->insertRow(parent->rowCount(), item);
@@ -211,33 +217,71 @@ void ItemListView::showContextMenu(const QPoint& pos)
 		{
 			mdl->appendRow(item);
 		}
-		edit(mdl->indexFromItem(item));
+		if( ItemBase* item = hItem.get() )
+		{
+			item->setName(name);
+		}
+
+		return item;
 	};
 
 
-	using CQActPtr = const QAction* const;
+	using CQActPtr = const QAction*;
 
 	QMenu menu;
 	CQActPtr actionAddFolder = menu.addAction("Add Folder");
-	CQActPtr actionAddComposition = menu.addAction("Add Composition");
+	CQActPtr actionAddComposition = nullptr;
+	CQActPtr actionEditComposition = nullptr;
+
+	if( !hItem.isNull() && ItemType::COMPOSITION == hItem->getItemType() )
+	{
+		actionEditComposition = menu.addAction("Edit composition");
+	}
+	else
+	{
+		actionAddComposition = menu.addAction("Add Composition");
+	}
+
 	CQActPtr selected = menu.exec(mapToGlobal(pos));
 
 	if(selected == actionAddFolder)
 	{
-		addItem("folder", ItemStore::create<ItemFolder>());
+		auto item = addItem("folder", ItemStore::create<ItemFolder>());
+		edit(mdl->indexFromItem(item));
 	}
-	else if(selected == actionAddComposition)
+	else if(actionAddComposition && selected == actionAddComposition)
 	{
-		addItem("composition", ItemStore::create<ItemComposition>());
+		CompositionDialog* dialog = new CompositionDialog(this);
+		if( QDialog::Accepted == dialog->exec() )
+		{
+			addItem(dialog->getName().toUtf8(), ItemStore::create<ItemComposition>());
+		}
+		else
+		{
+		}
+		dialog->deleteLater();
 	}
-	else
+	else if(actionEditComposition && selected == actionEditComposition)
 	{
-		// nothing was chosen
+		CompositionDialog* dialog = new CompositionDialog(this);
+		if(QDialog::Accepted == dialog->exec())
+		{
+		}
+		else
+		{
+		}
+		dialog->deleteLater();
 	}
 }
 
 
 void ItemListView::onDoubleClicked(const QModelIndex &index)
 {
-	qDebug() << "test";
+	auto mdl = static_cast<ItemListModel*>(model());
+	if(nullptr == mdl)
+	{
+		return;
+	}
+	ItemHandle hItem = mdl->getItem(index);
+	emit onItemSelected(hItem);
 }

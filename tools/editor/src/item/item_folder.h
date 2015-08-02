@@ -18,7 +18,7 @@ public:
 	ItemType getItemType(void) const override;
 	Qt::ItemFlags flags(void) const override;
 
-	QGraphicsItem* add(QGraphicsScene* graphicsScene) override;
+	QGraphicsItem* getGraphicsItem(void) override;
 };
 
 
@@ -39,7 +39,7 @@ inline Qt::ItemFlags ItemFolder::flags(void) const
 	return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsEditable;
 }
 
-inline QGraphicsItem* ItemFolder::add(QGraphicsScene* /*graphicsScene*/)
+inline QGraphicsItem* ItemFolder::getGraphicsItem(void)
 {
 	return nullptr;
 }

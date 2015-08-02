@@ -9,12 +9,15 @@
 #include "itemlist_model.h"
 #include "item/item_handle.h"
 #include "item/item_base.h"
+#include "item/item_composition.h"
 
 // -----------------------------------
 //  ItemView
 // -----------------------------------
 ItemView::ItemView(QWidget* parent)
 	: QGraphicsView(parent)
+	, hItem_()
+	, composition_(nullptr)
 {}
 
 ItemView::~ItemView(void)
@@ -43,21 +46,36 @@ void ItemView::dragMoveEvent(QDragMoveEvent* e)
 
 void ItemView::dropEvent(QDropEvent* e)
 {
-	
 	if(ItemListView* listView = qobject_cast<ItemListView*>(e->source()))
 	{
 		if(ItemListModel* mdl = qobject_cast<ItemListModel*>(listView->model()))
 		{
-			ItemHandle hItem = mdl->getItem(listView->currentIndex());
-			if(!hItem.isNull())
+			if(composition_)
 			{
-				QGraphicsItem* item = hItem->add(scene());
-				item->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
+				composition_->addItem(mdl->getItem(listView->currentIndex()));
 				e->ignore();
 				return;
 			}
 		}
 	}
 	QGraphicsView::dropEvent(e);
+}
+
+void ItemView::onItemSelected(ItemHandle hItem)
+{
+	if(hItem.isNull())
+	{
+		return;
+	}
+
+	hItem_ = hItem;
+	if( ItemType::COMPOSITION == hItem->getItemType() )
+	{
+		ItemComposition* composition = static_cast<ItemComposition*>(hItem.get());
+		setScene(composition->getGraphicsScene());
+		composition_ = composition;
+	}
+
+	qDebug() << "item selected";
 }
 

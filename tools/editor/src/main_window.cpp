@@ -10,6 +10,9 @@
 
 #include "itemlist_widget.h"
 #include "keyframe_widget.h"
+#include "itemlist_view.h"
+#include "item_view.h"
+#include "item/item_base.h"
 
 // -----------------------------------
 //  MainWindow
@@ -33,9 +36,14 @@ MainWindow::MainWindow(QWidget *parent)
 	keyframeWidget_ = new KeyframeWidget();
 	addDockWidget(Qt::DockWidgetArea::BottomDockWidgetArea, keyframeWidget_);
 
-	// 
-	graphicsScene_ = new QGraphicsScene(this);
-	ui_->graphicsView->setScene(graphicsScene_);
+	connect(itemListWidget_->getItemListView(), SIGNAL(onItemSelected(ItemHandle)),
+		ui_->graphicsView, SLOT(onItemSelected(ItemHandle)));
+
+	connect(itemListWidget_->getItemListView(), SIGNAL(onItemSelected(ItemHandle)),
+		this, SLOT(onItemSelected(ItemHandle)));
+
+	connect(itemListWidget_->getItemListView(), SIGNAL(onItemSelected(ItemHandle)),
+		keyframeWidget_, SLOT(onItemSelected(ItemHandle)));
 
 }
 
@@ -88,4 +96,10 @@ void MainWindow::actionSaveTriggered(void)
 	out << xml;
 	
 	file.close();
+}
+
+
+void MainWindow::onItemSelected(ItemHandle hItem)
+{
+	ui_->label->setText( hItem->getName() );
 }
