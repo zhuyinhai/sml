@@ -176,12 +176,14 @@ void ItemListView::dropEvent(QDropEvent * e)
 				QList<QStandardItem*> list;
 
 				auto item = new QStandardItem(url.fileName());
-				item->setData(QVariant::fromValue<ItemHandle>(ItemStore::create<ItemImage>(url)));
+				ItemHandle hItem = ItemStore::create<ItemImage>(url);
+				hItem->setName(url.fileName());
+				item->setData(QVariant::fromValue<ItemHandle>(hItem));
 				list.append(item);
 
 				if(auto parent = mdl->itemFromIndex(droppedIndex))
 				{
-					parent->insertRow(parent->rowCount(), list);
+					parent->insertRow(parent->rowCount(), item);
 					expand(mdl->indexFromItem(parent));
 				}
 				else

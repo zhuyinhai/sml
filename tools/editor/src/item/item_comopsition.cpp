@@ -6,11 +6,14 @@
 #include <QGraphicsScene>
 #include <QGraphicsItem>
 
+#include "keyframe_model.h"
+
 // -----------------------------------
 //  ItemComposition
 // -----------------------------------
 ItemComposition::ItemComposition(void)
 	: graphicsScene_(nullptr)
+	, keyframeModel_(nullptr)
 {}
 
 ItemComposition::~ItemComposition(void)
@@ -66,8 +69,34 @@ void ItemComposition::addItem(ItemHandle hItem)
 	}
 	item->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
 
+	QString name = hItem->getName().split(".", QString::SkipEmptyParts)[0];
+	
+
+
+	bool isNameDupulicated = false;
+	do
+	{
+		for(const auto& layer : layers_)
+		{
+			if( name==layer.name )
+			{
+				isNameDupulicated = true;
+				break;
+			}
+		}
+
+		if(isNameDupulicated)
+		{
+			auto strList = name.split(QRegExp("[0-9]+"));
+			qDebug() << strList;
+			isNameDupulicated = false;
+		}
+	}while(isNameDupulicated);
+
+
 	Layer layer = {
 		hItem,
+		name,
 		QPointF(),
 		QPointF(),
 		QSizeF(),
@@ -80,8 +109,26 @@ void ItemComposition::addItem(ItemHandle hItem)
 
 	QGraphicsScene* scene = getGraphicsScene();
 	scene->addItem(item);
+
+	if(keyframeModel_)
+	{
+		keyframeModel_->appendRow(new QStandardItem(layer.name));
+	}
 }
 
+KeyframeModel* ItemComposition::getKeyframeModel(void)
+{
+	if(!keyframeModel_)
+	{
+		keyframeModel_ = new KeyframeModel();
 
+		for(auto& layer : layers_)
+		{
+			keyframeModel_->appendRow( new QStandardItem("test") );
+		}
+
+	}
+	return keyframeModel_;
+}
 
 

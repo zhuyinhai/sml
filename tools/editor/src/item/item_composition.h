@@ -10,6 +10,7 @@
 #include "item/item_handle.h"
 
 class QGraphicsScene;
+class KeyframeModel;
 
 // -----------------------------------
 //  Layer
@@ -17,6 +18,7 @@ class QGraphicsScene;
 struct Layer
 {
 	ItemHandle hItem;
+	QString name;
 	QPointF position;
 	QPointF anchor;
 	QSizeF scale;
@@ -25,7 +27,6 @@ struct Layer
 
 	QGraphicsItem* itemPtr;
 };
-
 
 
 // -----------------------------------
@@ -46,9 +47,13 @@ public:
 	QGraphicsScene* getGraphicsScene(void);
 	void addItem(ItemHandle hItem);
 
+	KeyframeModel* getKeyframeModel(void);
+
 private:
 	QGraphicsScene* graphicsScene_;
 	QList<Layer> layers_;
+
+	KeyframeModel* keyframeModel_;
 };
 
 

@@ -24,6 +24,5 @@ public slots:
 
 private:
 	Ui::KeyframeWidget* ui_;
-	KeyframeModel* keyframeModel_;
 };
 
