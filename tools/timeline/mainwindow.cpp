@@ -74,8 +74,6 @@ MainWindow::MainWindow(QWidget *parent) :
     delegate(new TimelineDelegate),
     layer(new Layer("test"))
 {
-    qRegisterMetaType<KeyframeList*>("KeyframeList");
-
     ui->setupUi(this);
 
     ui->treeView->setModel(model);

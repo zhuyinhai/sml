@@ -5,28 +5,30 @@
 #include <QLineEdit>
 #include <QValidator>
 
-#include "timelineitem.h"
+#include "keyframelist.h"
 
 
 TimelineDelegate::TimelineDelegate(QObject *parent)
-    : QItemDelegate(parent)
+    : QStyledItemDelegate(parent)
 {
 }
 
 void TimelineDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QItemDelegate::paint(painter, option, index);
-
     QVariant variant = index.data(Qt::UserRole + 1);
-    if( auto list = variant.value<KeyframeList*>() )
+    if( auto keyframeList = variant.value<KeyframeList*>() )
     {
-        qDebug() << list->size();
+        keyframeList->paint(painter, option.rect, option.palette);
+    }
+    else
+    {
+        QStyledItemDelegate::paint(painter, option, index);
     }
 }
 
 QSize TimelineDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    return QItemDelegate::sizeHint(option, index);
+    return QStyledItemDelegate::sizeHint(option, index);
 }
 
 QWidget* TimelineDelegate::createEditor(
@@ -42,6 +44,12 @@ QWidget* TimelineDelegate::createEditor(
     }
     else
     {
-        return QItemDelegate::createEditor(parent, option, index);
+        QVariant variant = index.data(Qt::UserRole + 1);
+        if( auto keyframeList = variant.value<KeyframeList*>() )
+        {
+            return keyframeList->createEditor(parent);
+        }
+
+        return QStyledItemDelegate::createEditor(parent, option, index);
     }
 }

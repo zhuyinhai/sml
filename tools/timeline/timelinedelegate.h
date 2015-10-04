@@ -1,9 +1,9 @@
 #ifndef TIMELINEDELEGATE_H
 #define TIMELINEDELEGATE_H
 
-#include <QItemDelegate>
+#include <QStyledItemDelegate>
 
-class TimelineDelegate : public QItemDelegate
+class TimelineDelegate : public QStyledItemDelegate
 {
 public:
     TimelineDelegate(QObject *parent = nullptr);

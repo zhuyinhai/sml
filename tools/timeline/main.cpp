@@ -1,7 +1,9 @@
 #include "mainwindow.h"
 #include <QApplication>
 
+#ifdef _WIN32
 #include <vld.h>
+#endif
 
 int main(int argc, char *argv[])
 {
