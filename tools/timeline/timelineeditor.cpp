@@ -9,13 +9,13 @@ TimelineEditor::TimelineEditor(KeyframeList* const keyframeList,QWidget *parent)
     QWidget(parent),
     keyframeList_(keyframeList)
 {
-    qDebug() << "create editor";
+    // qDebug() << "create editor";
     keyframeList_->isEditing_ = true;
 }
 
 TimelineEditor::~TimelineEditor()
 {
-    qDebug() << "destroy editor";
+    // qDebug() << "destroy editor";
     keyframeList_->isEditing_ = false;
 }
 

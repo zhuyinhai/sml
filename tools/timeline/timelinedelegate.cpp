@@ -20,7 +20,7 @@ void TimelineDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     {
         keyframeList->paint(painter, option.rect, option.palette);
     }
-    else
+    //else
     {
         QStyledItemDelegate::paint(painter, option, index);
     }
