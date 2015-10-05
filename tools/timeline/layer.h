@@ -12,6 +12,7 @@ public:
     virtual ~Layer(void) = default;
 
     qreal duration(void) const;
+    qreal timescale(void) const;
 
 private:
     void initialize(const QString& text);

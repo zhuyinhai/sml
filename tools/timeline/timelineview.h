@@ -3,6 +3,18 @@
 
 #include <QTreeView>
 
+
+class CurrentTimeIndicator : public QWidget
+{
+public:
+    explicit CurrentTimeIndicator(QWidget* parent=nullptr);
+    virtual ~CurrentTimeIndicator(void) = default;
+
+protected:
+    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+};
+
+
 class TimelineView : public QTreeView
 {
 public:

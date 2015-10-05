@@ -14,6 +14,12 @@ qreal Layer::duration(void) const
     return 10.0;
 }
 
+qreal Layer::timescale() const
+{
+    // test value
+    return 1.0;
+}
+
 void Layer::initialize(const QString& text)
 {
     auto root = new QStandardItem(text);

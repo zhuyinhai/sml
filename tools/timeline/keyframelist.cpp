@@ -2,7 +2,10 @@
 
 #include <QDebug>
 #include <QPainter>
+
 #include "timelineeditor.h"
+#include "global_setting.h"
+
 
 KeyframeList::KeyframeList(Layer* const layer) :
     layer_(layer),

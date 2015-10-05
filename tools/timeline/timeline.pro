@@ -30,6 +30,7 @@ HEADERS  += mainwindow.h \
     timelineview.h \
     layer.h \
     singleton.h \
-    call_once.h
+    call_once.h \
+    global_setting.h
 
 FORMS    += mainwindow.ui
