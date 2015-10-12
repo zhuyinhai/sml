@@ -28,7 +28,13 @@ void TimelineDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
 QSize TimelineDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    return QStyledItemDelegate::sizeHint(option, index);
+    auto size = QStyledItemDelegate::sizeHint(option, index);
+    QVariant variant = index.data(Qt::UserRole + 1);
+    if( variant.canConvert<KeyframeList*>())
+    {
+        size.setWidth(1000);
+    }
+    return size;
 }
 
 QWidget* TimelineDelegate::createEditor(
