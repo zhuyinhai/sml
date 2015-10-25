@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     timelineeditor.cpp \
     keyframelist.cpp \
     timelineview.cpp \
-    layer.cpp
+    layer.cpp \
+    composition.cpp
 
 HEADERS  += mainwindow.h \
     timelinedelegate.h \
@@ -31,6 +32,7 @@ HEADERS  += mainwindow.h \
     layer.h \
     singleton.h \
     call_once.h \
-    global_setting.h
+    global_setting.h \
+    composition.h
 
 FORMS    += mainwindow.ui

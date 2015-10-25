@@ -3,19 +3,24 @@
 
 #include <QList>
 #include <QString>
+
+class Composition;
 class QStandardItem;
 
 class Layer : public QList<QStandardItem*>
 {
 public:
-    explicit Layer(const QString& text);
+    explicit Layer(const Composition* composition, const QString& text);
     virtual ~Layer(void) = default;
 
-    qreal duration(void) const;
-    qreal timescale(void) const;
+    const Composition* composition(void) const;
 
 private:
     void initialize(const QString& text);
+
+private:
+    const Composition* const composition_;
+
 };
 
 #endif // LAYER_H

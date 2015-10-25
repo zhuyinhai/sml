@@ -3,6 +3,10 @@
 
 #include "singleton.h"
 
+
+#define GLOBAL_SETTING Singleton<GlobalSetting>::instance()
+
+
 struct GlobalSetting
 {
     // --
@@ -13,14 +17,10 @@ struct GlobalSetting
 };
 
 
-#define GLOBAL_SETTING Singleton<GlobalSetting>::instance()
-
+// --
 inline GlobalSetting::GlobalSetting(void) :
-    fps(30)
+    fps(60)
 {}
-
-
-
 
 
 

@@ -5,14 +5,20 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QScrollBar>
+#include <QAction>
+#include <QMenu>
+#include <QTimerEvent>
 
 #include "keyframelist.h"
-
+#include "composition.h"
 
 CurrentTimeIndicator::CurrentTimeIndicator(QWidget* parent) :
     QWidget(parent),
     left_(0),
     right_(0),
+    currentFrame_(0),
+    frameWidth_(0),
+    offset_(0),
     editing_(false)
 {
     resize(5, parent->height());
@@ -23,7 +29,24 @@ void CurrentTimeIndicator::onTimelineResized(int left, int right)
 {
     left_ = left;
     right_ = right;
-    setGeometry(left, 0, width(), height());
+    updatePosition();
+}
+
+void CurrentTimeIndicator::onFrameWidthChanged(int frameWidth)
+{
+    frameWidth_ = frameWidth;
+    updatePosition();
+}
+
+void CurrentTimeIndicator::onScroll(int offset)
+{
+    offset_ = offset;
+    updatePosition();
+}
+
+void CurrentTimeIndicator::updatePosition()
+{
+    setGeometry(left_+frameWidth_*currentFrame_-offset_, 0, width(), height());
 }
 
 
@@ -53,7 +76,9 @@ void CurrentTimeIndicator::mouseMoveEvent(QMouseEvent *event)
     if(editing_)
     {
         int x = mapToParent(event->pos()).x();
-        setGeometry(qBound(left_, x, right_), 0, width(), height());
+        x -= x%frameWidth_;
+        currentFrame_ = qBound(0, (x-left_+offset_)/frameWidth_, right_/frameWidth_);
+        updatePosition();
     }
 }
 
@@ -64,6 +89,7 @@ void CurrentTimeIndicator::mouseReleaseEvent(QMouseEvent */*event*/)
 
 
 
+
 TimelineHeaderView::TimelineHeaderView(QWidget* parent) :
     QHeaderView(Qt::Horizontal, parent)
 {
@@ -71,30 +97,60 @@ TimelineHeaderView::TimelineHeaderView(QWidget* parent) :
 
 void TimelineHeaderView::paintSection(QPainter *painter, const QRect &rect, int logicalIndex) const
 {
+#if 0
     if(TimelineColumn::TIMELINE==logicalIndex)
     {
         painter->setBrush(QColor("red"));
         painter->drawRect(rect);
     }
     else
+#endif
     {
         QHeaderView::paintSection(painter, rect, logicalIndex);
     }
 }
 
+CustomScrollBar::CustomScrollBar(QWidget *parent):
+    QScrollBar(parent)
+{
+    connect(this, SIGNAL(valueChanged(int)), this, SLOT(onValueChanged(int)));
+}
+
+bool CustomScrollBar::eventFilter(QObject *obj, QEvent *event)
+{
+    qDebug() << event;
+    return QScrollBar::eventFilter(obj, event);
+}
+
+void CustomScrollBar::onValueChanged(int value)
+{
+    qDebug() << value;
+}
 
 
 
 TimelineView::TimelineView(QWidget* parent) :
     QTreeView(parent),
-    frozenTreeView_(new QTreeView(parent))
-{}
+    frozenTreeView_(new QTreeView(parent)),
+    addKeyAction_(new QAction(tr("&Add Key"),this)),
+    inContextMenu_(false)
+{
+}
 
 void TimelineView::init()
 {
+
+    setHorizontalScrollBar(new CustomScrollBar(this));
+
     auto header = new TimelineHeaderView(this);
-    auto cti = new CurrentTimeIndicator(this);
     setHeader( header );
+
+    auto cti = new CurrentTimeIndicator(this);
+    if(Composition * comp = composition())
+    {
+        cti->onFrameWidthChanged(comp->frameWidth());
+    }
+
 
     frozenTreeView_->setModel(model());
     frozenTreeView_->setFocusPolicy(Qt::NoFocus);
@@ -119,6 +175,9 @@ void TimelineView::init()
 
     // --
     connect( verticalScrollBar(), SIGNAL(valueChanged(int)), frozenTreeView_->verticalScrollBar(), SLOT(setValue(int)) );
+    connect( frozenTreeView_->verticalScrollBar(), SIGNAL(valueChanged(int)), verticalScrollBar(), SLOT(setValue(int)) );
+
+    connect( horizontalScrollBar(), SIGNAL(valueChanged(int)), cti, SLOT(onScroll(int)) );
 
     //--
     connect(header, SIGNAL(sectionResized(int,int,int)), this, SLOT(onSectionResized(int,int,int)));
@@ -126,6 +185,7 @@ void TimelineView::init()
     //--
     connect(this, SIGNAL(timelineResized(int,int)), cti, SLOT(onTimelineResized(int,int)));
 
+    updateTimelineWidth();
 }
 
 void TimelineView::onSectionResized(int logicalIndex, int /*oldSize*/, int newSize)
@@ -166,11 +226,68 @@ void TimelineView::resizeEvent(QResizeEvent *event)
     updateFrozenTreeGeometry();
 }
 
+void TimelineView::contextMenuEvent(QContextMenuEvent *event)
+{
+    inContextMenu_ = true;
+    QMenu menu(this);
+    menu.addAction(addKeyAction_);
+    QAction* action = menu.exec(event->globalPos());
+    if(action==addKeyAction_)
+    {
+        QModelIndex index = indexAt(event->pos());
+        QVariant variant = index.data(Qt::UserRole + 1);
+        if( auto keyframeList = variant.value<KeyframeList*>() )
+        {
+            qDebug() << event->pos().x();
+            QPoint point = mapFromGlobal(event->globalPos());
+            qDebug() << point.x();
+            KeyframeData data;
+            data.frame = 3;
+            data.value = 0;
+            keyframeList->append(data);
+        }
+    }
+    inContextMenu_ = false;
+}
+
+void TimelineView::timerEvent(QTimerEvent *event)
+{
+    // timerEvent move horitontal scrollBar after mouse right click
+    event->ignore();
+#if 0
+    if( inContextMenu_ )
+    {
+        event->ignore();
+    }
+    else
+    {
+        QTreeView::timerEvent(event);
+    }
+#endif
+}
+
+
 void TimelineView::updateFrozenTreeGeometry()
 {
     frozenTreeView_->setGeometry(frameWidth()+3,frameWidth()+3,
                                  columnWidth(0) + columnWidth(1),viewport()->height()+header()->height());
 }
+
+void TimelineView::updateTimelineWidth()
+{
+    Composition* comp = composition();
+    if(!comp)
+    {
+        return;
+    }
+    header()->resizeSection(TimelineColumn::TIMELINE, comp->frame() * comp->frameWidth());
+}
+
+Composition *TimelineView::composition()
+{
+    return static_cast<Composition*>(model());
+}
+
 
 
 

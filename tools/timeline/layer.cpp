@@ -2,23 +2,19 @@
 
 #include <QStandardItem>
 #include "timelineitem.h"
+#include "composition.h"
 
-Layer::Layer(const QString& text)
+Layer::Layer(const Composition* composition, const QString& text):
+    composition_(composition)
 {
     initialize(text);
 }
 
-qreal Layer::duration(void) const
+const Composition* Layer::composition(void) const
 {
-    // test value
-    return 10.0;
+    return composition_;
 }
 
-qreal Layer::timescale() const
-{
-    // test value
-    return 1.0;
-}
 
 void Layer::initialize(const QString& text)
 {

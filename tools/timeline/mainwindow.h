@@ -3,10 +3,7 @@
 
 #include <QMainWindow>
 
-
-
-class QStandardItem;
-class QStandardItemModel;
+class Composition;
 class TimelineDelegate;
 class Layer;
 
@@ -24,10 +21,9 @@ public:
     ~MainWindow();
 
 private:
-    Ui::MainWindow *ui;
-    QStandardItemModel* model;
-    TimelineDelegate* delegate;
-    Layer* layer;
+    Ui::MainWindow *ui_;
+    Composition* composition_;
+    TimelineDelegate* delegate_;
 };
 
 #endif // MAINWINDOW_H

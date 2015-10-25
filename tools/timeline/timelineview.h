@@ -3,6 +3,10 @@
 
 #include <QTreeView>
 #include <QHeaderView>
+#include <QScrollBar>
+
+class QAction;
+class Composition;
 
 enum TimelineColumn : int
 {
@@ -21,6 +25,11 @@ public:
 
 public slots:
     void onTimelineResized(int left, int right);
+    void onFrameWidthChanged(int frameWidth);
+    void onScroll(int offset);
+
+public:
+    void updatePosition(void);
 
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
@@ -31,6 +40,9 @@ protected:
 private:
     int left_;
     int right_;
+    int currentFrame_;
+    int frameWidth_;
+    int offset_;
     bool editing_;
 };
 
@@ -47,6 +59,21 @@ protected:
 };
 
 
+class CustomScrollBar : public QScrollBar
+{
+    Q_OBJECT
+public:
+    explicit CustomScrollBar(QWidget* parent = nullptr);
+    virtual ~CustomScrollBar(void) = default;
+
+    bool eventFilter(QObject *obj, QEvent *event) Q_DECL_OVERRIDE;
+
+public slots:
+    void onValueChanged(int value);
+
+};
+
+
 class TimelineView : public QTreeView
 {
     Q_OBJECT
@@ -58,18 +85,24 @@ public:
 
 public slots:
     void onSectionResized(int logicalIndex, int oldSize, int newSize);
-
 signals:
     void timelineResized(int left, int right);
 
 protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void contextMenuEvent(QContextMenuEvent* event) Q_DECL_OVERRIDE;
+    void timerEvent(QTimerEvent* event) Q_DECL_OVERRIDE;
+
 private:
     void updateFrozenTreeGeometry(void);
+    void updateTimelineWidth(void);
+    Composition *composition(void);
 
 private:
     QTreeView* frozenTreeView_;
+    QAction* addKeyAction_;
+    bool inContextMenu_;
 };
 
 #endif // TIMELINEVIEW_H

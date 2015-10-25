@@ -10,54 +10,35 @@
 #include "timelinedelegate.h"
 #include "timelineitem.h"
 #include "layer.h"
-
-class TimelineModel : public QStandardItemModel
-{
-public:
-    TimelineModel(void)
-    {
-        initalize();
-    }
-    virtual ~TimelineModel(void) = default;
-private:
-    void initalize(void)
-    {
-        QStringList headerLabels = { "layer", "value", "timeline" };
-        setHorizontalHeaderLabels( headerLabels );
-    }
-};
-
+#include "composition.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    model(new TimelineModel),
-    delegate(new TimelineDelegate),
-    layer(new Layer("test"))
+    ui_(new Ui::MainWindow),
+    composition_(new Composition),
+    delegate_(new TimelineDelegate)
 {
-    ui->setupUi(this);
+    ui_->setupUi(this);
 
-    ui->treeView->setModel(model);
-    ui->treeView->setItemDelegate(delegate);
-    model->appendRow(*layer);
-    ui->treeView->header()->setSectionResizeMode(2, QHeaderView::Fixed);
-    ui->treeView->header()->resizeSection(2, 1000);
+    composition_->setDuration(10.f);
+    composition_->newLayer<Layer,const QString&>("test");
+    composition_->newLayer<Layer,const QString&>("test2");
 
-    ui->treeView->init();
+    ui_->treeView->setModel(composition_);
+    ui_->treeView->setItemDelegate(delegate_);
 
-    // ui->testTreeView->setModel(model);
+    ui_->treeView->header()->setSectionResizeMode(2, QHeaderView::Fixed);
+    ui_->treeView->header()->resizeSection(2, 1000);
 
-    // connect( ui->treeView, SIGNAL(expanded(QModelIndex)), ui->testTreeView, SLOT(expand(QModelIndex)) );
-    // connect( ui->treeView, SIGNAL(collapsed(QModelIndex)), ui->testTreeView, SLOT(collapse(QModelIndex)) );
+    ui_->treeView->init();
 
 
 }
 
 MainWindow::~MainWindow()
 {
-    delete layer;
-    delete delegate;
-    delete model;
-    delete ui;
+    delete delegate_;
+    delete composition_;
+    delete ui_;
 }
